@@ -33,6 +33,7 @@ jobs:
         working-directory: iosevka
         run: |
           npm install
+	  sudo apt install ttfautohint
       
       - name: Build all Aporetic variants
         working-directory: iosevka
