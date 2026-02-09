@@ -1,0 +1,112 @@
+name: Build Aporetic Fonts
+
+on:
+  # Allow manual triggering
+  workflow_dispatch:
+  
+  # Run weekly to catch new Iosevka updates
+  schedule:
+    - cron: '0 0 * * 0'  # Every Sunday at midnight UTC
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      
+      - name: Clone latest Iosevka
+        run: |
+          git clone --depth 1 https://github.com/be5invis/Iosevka.git iosevka
+          cd iosevka
+          echo "IOSEVKA_COMMIT=$(git rev-parse --short HEAD)" >> $GITHUB_ENV
+          echo "IOSEVKA_VERSION=$(git describe --tags --abbrev=0 2>/dev/null || echo 'main')" >> $GITHUB_ENV
+      
+      - name: Get build configuration from Protesilaos Aporetic repo
+        run: |
+          curl -o iosevka/private-build-plans.toml https://raw.githubusercontent.com/protesilaos/aporetic/main/private-build-plans.toml
+      
+      - name: Install dependencies
+        working-directory: iosevka
+        run: |
+          npm install
+      
+      - name: Build all Aporetic variants
+        working-directory: iosevka
+        run: |
+          for variant in aporetic{-sans,-serif}{,-mono} ; do 
+            echo "Building $variant..."
+            npm run build -- ttf::$variant
+          done
+      
+      - name: Prepare release artifacts
+        run: |
+          mkdir -p release-fonts
+          
+          # Copy all built TTF files with directory structure
+          for variant in aporetic-sans aporetic-sans-mono aporetic-serif aporetic-serif-mono ; do
+            if [ -d "iosevka/dist/$variant/TTF" ]; then
+              mkdir -p "release-fonts/$variant"
+              cp -r "iosevka/dist/$variant/TTF/"* "release-fonts/$variant/"
+            fi
+          done
+          
+          # Create zip archives for each variant
+          cd release-fonts
+          for variant in aporetic-sans aporetic-sans-mono aporetic-serif aporetic-serif-mono ; do
+            if [ -d "$variant" ]; then
+              zip -r "${variant}.zip" "$variant"
+            fi
+          done
+      
+      - name: Generate release notes
+        run: |
+          cat > RELEASE_NOTES.md << EOF
+          # Aporetic Fonts Build
+          
+          Built against Iosevka \`${{ env.IOSEVKA_COMMIT }}\` (version ${{ env.IOSEVKA_VERSION }})
+          
+          ## Font Variants Included
+          
+          - **aporetic-sans** - Sans-serif proportional variant
+          - **aporetic-sans-mono** - Sans-serif monospaced variant
+          - **aporetic-serif** - Serif proportional variant
+          - **aporetic-serif-mono** - Serif monospaced variant
+          
+          ## Installation
+          
+          Download the zip file for your preferred variant(s) and extract the TTF files to your system fonts directory:
+          
+          - **Linux**: \`~/.local/share/fonts/\` (user) or \`/usr/share/fonts/\` (system-wide)
+          - **macOS**: \`~/Library/Fonts/\` (user) or \`/Library/Fonts/\` (system-wide)
+          - **Windows**: Right-click the TTF files and select "Install"
+          
+          ## Build Information
+          
+          - Build date: $(date -u +"%Y-%m-%d %H:%M:%S UTC")
+          - Iosevka commit: ${{ env.IOSEVKA_COMMIT }}
+          - Iosevka version: ${{ env.IOSEVKA_VERSION }}
+          EOF
+      
+      - name: Create Release
+        uses: softprops/action-gh-release@v1
+        with:
+          tag_name: build-${{ github.run_number }}-${{ env.IOSEVKA_COMMIT }}
+          name: Aporetic Fonts (Iosevka ${{ env.IOSEVKA_VERSION }})
+          body_path: RELEASE_NOTES.md
+          files: |
+            release-fonts/*.zip
+          draft: false
+          prerelease: false
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: aporetic-fonts
+          path: release-fonts/
+          retention-days: 30
