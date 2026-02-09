@@ -32,8 +32,7 @@ jobs:
       - name: Install dependencies
         working-directory: iosevka
         run: |
-          npm install
-	  sudo apt install ttfautohint
+          npm install && sudo apt install ttfautohint
       
       - name: Build all Aporetic variants
         working-directory: iosevka
