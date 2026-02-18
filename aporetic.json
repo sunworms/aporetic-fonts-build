@@ -1,0 +1,25 @@
+{
+    "spec": 1,
+    "name": "Iosevka",
+    "previewText": "The insufferable amount of pain you went through doing this fills you with determination.",
+    "main": {
+        "ABCGintoNord-ExtraBold": "https://sunworms.github.io/aporetic-fonts-build/fonts/aporetic-sans-normalboldupright.ttf",
+        "ggsans-Bold": "https://sunworms.github.io/aporetic-fonts-build/fonts/aporetic-sans-normalboldupright.ttf",
+        "ggsans-BoldItalic": "https://sunworms.github.io/aporetic-fonts-build/fonts/aporetic-sans-normalbolditalic.ttf",
+        "ggsans-ExtraBold": "https://sunworms.github.io/aporetic-fonts-build/fonts/aporetic-sans-normalboldupright.ttf",
+        "ggsans-ExtraBoldItalic": "https://sunworms.github.io/aporetic-fonts-build/fonts/aporetic-sans-normalbolditalic.ttf",
+        "ggsans-Medium": "https://sunworms.github.io/aporetic-fonts-build/fonts/aporetic-sans-normalregularupright.ttf",
+        "ggsans-MediumItalic": "https://sunworms.github.io/aporetic-fonts-build/fonts/aporetic-sans-normalregularitalic.ttf",
+        "ggsans-Normal": "https://sunworms.github.io/aporetic-fonts-build/fonts/aporetic-sans-normalregularupright.ttf",
+        "ggsans-NormalItalic": "https://sunworms.github.io/aporetic-fonts-build/fonts/aporetic-sans-normalregularitalic.ttf",
+        "ggsans-Semibold": "https://sunworms.github.io/aporetic-fonts-build/fonts/aporetic-sans-normalregularupright.ttf",
+        "ggsans-SemiboldItalic": "https://sunworms.github.io/aporetic-fonts-build/fonts/aporetic-sans-normalregularitalic.ttf",
+        "NotoSans-Bold": "https://sunworms.github.io/aporetic-fonts-build/fonts/aporetic-sans-normalboldupright.ttf",
+        "NotoSans-ExtraBold": "https://sunworms.github.io/aporetic-fonts-build/fonts/aporetic-sans-normalboldupright.ttf",
+        "NotoSans-Medium": "https://sunworms.github.io/aporetic-fonts-build/fonts/aporetic-sans-normalregularupright.ttf",
+        "NotoSans-Normal": "https://sunworms.github.io/aporetic-fonts-build/fonts/aporetic-sans-normalregularupright.ttf",
+        "NotoSans-NormalItalic": "https://sunworms.github.io/aporetic-fonts-build/fonts/aporetic-sans-normalregularitalic.ttf",
+        "NotoSans-Semibold": "https://sunworms.github.io/aporetic-fonts-build/fonts/aporetic-sans-normalregularupright.ttf",
+        "SourceCodePro-Semibold": "https://sunworms.github.io/aporetic-fonts-build/fonts/aporetic-sans-mono-normalregularupright.ttf"
+    }
+}
